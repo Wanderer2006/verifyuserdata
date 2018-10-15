@@ -6,7 +6,6 @@ import java.io.Serializable;
  * POJO-класс для десириализации JSON-запроса из Camunda BPM
  */
 public class UserData implements Serializable {
-
     private String fio;
 
     private String passSeries;

@@ -71,7 +71,7 @@ public class DaDataRestClient {
                 }
             }
         } catch (RestClientException e) {
-            LOGGER.info("Error calling REST service DaData", e);
+            LOGGER.error("Error calling REST-service DaData", e);
         }
 
         return false;

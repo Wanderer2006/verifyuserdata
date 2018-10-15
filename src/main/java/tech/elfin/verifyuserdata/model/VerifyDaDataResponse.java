@@ -11,6 +11,9 @@ public class VerifyDaDataResponse implements Serializable {
     private String number;
     private int qc;
 
+    public VerifyDaDataResponse() {
+    }
+
     public VerifyDaDataResponse(String source, String series, String number, int qc) {
         this.source = source;
         this.series = series;

@@ -13,7 +13,7 @@ import tech.elfin.verifyuserdata.model.UserDataResponse;
 import tech.elfin.verifyuserdata.rest.DaDataRestClient;
 
 /**
- * Сервис обработки(проверки) данных, введенных клиентом в форме Camunda BPM
+ * Сервис обработки(проверки) данных, введенных клиентом
  */
 @Service
 public class UserDataService {
@@ -25,9 +25,9 @@ public class UserDataService {
     /**
      * Проверка введенных дпользователем данных
      * @param userData - пользовательские данные
-     * @return - объект, содержащий признак валидности введенных данных
+     * @return - признак валидности введенных данных
      */
-    public UserDataResponse verifyUserData(UserData userData) {
+    public boolean verifyUserData(UserData userData) {
         String passSeries = userData.getPassSeries().replaceAll(" ", "");
         String passNumber = userData.getPassNumber().replaceAll(" ", "");
 
@@ -37,15 +37,15 @@ public class UserDataService {
             LOGGER.info("Данные пользователя действительны");
             if (daDataRestClient.verifyPassport(passSeries, passNumber)) {
                 LOGGER.info("Паспорт действителен");
-                return new UserDataResponse(true);
+                return true;
             } else {
-                LOGGER.info("Паспорт недействителен");
+                LOGGER.error("Паспорт недействителен");
             }
         }
-        LOGGER.info("Данные пользователя недействительны. Серия: " + passElementValid(passSeries, 4) +
+        LOGGER.error("Данные пользователя недействительны. Серия: " + passElementValid(passSeries, 4) +
                 ", Номер: " + passElementValid(passNumber, 6)  +
                 ", E-Mail: " + emailValid(userData.getEmail()));
-        return new UserDataResponse(false);
+        return false;
     }
 
     /**
@@ -61,11 +61,7 @@ public class UserDataService {
         Matcher mPassElement = pPassport.matcher(passElement);
         boolean elementValid =  mPassElement.matches() && (passElement.length() == lengthElement);
         if (!elementValid) {
-            if (lengthElement == 4) {
-                LOGGER.info("Серия Паспорта недействительна!!!");
-            } else {
-                LOGGER.info("Серия Паспорта действительна");
-            }
+            LOGGER.error(lengthElement == 4 ? "Серия Паспорта недействительна." : "Номер Паспорта недействителен.");
         }
         return elementValid;
     }
@@ -80,7 +76,7 @@ public class UserDataService {
         Matcher mEmail = pEmail.matcher(email);
         boolean elementValid = mEmail.matches();
         if (!elementValid) {
-            LOGGER.info("Email не соответсвует стандарту!!!");
+            LOGGER.error("Email не соответсвует стандарту.");
         }
         return elementValid;
     }

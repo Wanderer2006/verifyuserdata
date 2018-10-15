@@ -19,11 +19,10 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import tech.elfin.verifyuserdata.model.UserData;
 
-
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class UserDataControllerIT {
+public class UserDataControllerIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
 

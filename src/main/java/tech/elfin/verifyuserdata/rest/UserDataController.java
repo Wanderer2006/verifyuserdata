@@ -13,7 +13,7 @@ import tech.elfin.verifyuserdata.model.UserDataResponse;
 import tech.elfin.verifyuserdata.service.UserDataService;
 
 /**
- * Контроллер для обработки REST-запросов вида http://host:port/api/verify.
+ * Контроллер для обработки REST-запросов http://host:port/api/verify.
  * Данные передаются в теле POST-запроса
  */
 @RestController
@@ -27,6 +27,6 @@ public class UserDataController {
     @RequestMapping(value = "/verify", method = RequestMethod.POST)
     public UserDataResponse verifyUserData(@RequestBody UserData userData) {
         LOGGER.info(userData.toString());
-        return userDataService.verifyUserData(userData);
+        return new UserDataResponse(userDataService.verifyUserData(userData));
     }
 }
